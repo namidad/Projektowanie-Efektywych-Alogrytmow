@@ -20,6 +20,13 @@ int main(int argc, const char * argv[]) {
     
     srand( static_cast<unsigned int>(time(NULL)));
 
+//
+//    Annealing *anal = new Annealing();
+//    if(anal->initializeMatrix("15.txt")){
+//        anal->tsp(100000.0,10.0);
+//    }
+
+
     int choice;
     double tmin,tmax;
     do{
@@ -33,10 +40,10 @@ int main(int argc, const char * argv[]) {
         if(choice==1){
             Annealing *anal = new Annealing();
             string filename;
-            do{
-                cout<<endl<<endl<<"Podaj nazwe pliku: ";
-                cin>>filename;
-            } while (!anal->initializeMatrix(filename));
+//            do{
+//                cout<<endl<<endl<<"Podaj nazwe pliku: ";
+//                cin>>filename;
+//            } while (!anal->initializeMatrix(filename));
             anal->initializeMatrix("12.txt");
             do{
                 cout<<endl<<endl<<"Podaj tmin: ";

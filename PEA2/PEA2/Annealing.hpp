@@ -23,17 +23,8 @@ private:
     // ilosc miast
     int numberOfCities;
     
-    //miasto startowe
-    int initialCity;
-    
     // waga rozwiazania problemu
-    int minWeight, currWeight;
-    
-    // ilosc rekurencji
-    int iteration;
-    
-    // liczniki
-    int counter, currCounter;
+    int minWeight;
     
     // mierzenie czasu
     double time;
@@ -44,31 +35,35 @@ private:
     // macierz wag pomiedzy miastami
     int **Weight;
     
-    // droga miedzy miastami - stosy wierzcholkow
+    // droga miedzy miastami
     int *finalPath, *tempPath;
-    
-    
+
     
     
 public:
-    
+    // rozpoczenie algorytmu
     void tsp(double temperatureMax, double temperatureMin);
+    
     // wczytanie z pliku macierzy o podanej nazwie pliku
     bool initializeMatrix(string filename);
-    ~Annealing();
     
-    // poczatkowa metoda startujaca poszukiwania
-    bool startProgram(int initialC);
-    
-    // display results
+    // wyswietl rozwiazanie
     void displaySolution(int* finalPath, int numberOfCities, int minWeight);
     
+    // ustaw nowa sciezke pod zmienna koncowa
     int* setFinalPath();
+    
+    // wygeneruj losowa zmiane miast
     int* generateRandomSwap(int *path);
+    
+    // policz koszt podrozy pomiedzy miastami
     int calculateCost(int **Weight, int *tempPath, int numberOfCities);
+    
+    // policz prawdopodobienstwo zaakceptowania nowego rozwiazania
     double generateProbaility(int temperature, int* pathA, int* pathB);
     
-    
+    //destruktor
+    ~Annealing();
     
 };
 

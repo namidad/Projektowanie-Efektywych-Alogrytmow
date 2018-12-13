@@ -41,7 +41,9 @@ void Annealing::tsp(double temperatureMax, double temperatureMin){
     minWeight = INT_MAX;
     finalPath = new int[numberOfCities];
     tempPath = new int[numberOfCities];
+    int *temp = new int [numberOfCities];
     int calculate;
+    
 
     //losowa sciezka startowa
     for(int i=0; i<=numberOfCities;i++){
@@ -55,14 +57,11 @@ void Annealing::tsp(double temperatureMax, double temperatureMin){
     finalPath=setFinalPath();
     
     while(temperatureMin<temperatureMax){
-        //zamien w sposob losowy dwa wierzcholki w naszej tymczasowej tablicy
-        
-        //rozwiazanie generowane przez zamiane dwoch losowych miast
-        int *temp = generateRandomSwap(tempPath);
-        
+        // rozwiazanie generowane przez zamiane dwoch losowych miast
+        temp = generateRandomSwap(tempPath);
+
         //prawdopodobienstwo zaakceptowania nowego rozwiazania
         if(((double) rand() / (RAND_MAX)) < generateProbaility(temperatureMax, temp, tempPath)){
-            
             for(int i=0;i<=numberOfCities;i++){
                 if(i!=numberOfCities){
                     tempPath[i]=temp[i];
@@ -81,17 +80,17 @@ void Annealing::tsp(double temperatureMax, double temperatureMin){
     }
 
     displaySolution(finalPath,numberOfCities,minWeight);
-    
+    delete [] temp;
     delete [] tempPath;
     delete [] finalPath;
     
 }
 
 
-int Annealing::calculateCost(int **Weight, int *tempPath, int numberOfCities){
+int Annealing::calculateCost(int **Weight, int *tempPathh, int numberOfCities){
     int sum=0;
     for(int i=0;i<numberOfCities;i++){
-        sum+=Weight[tempPath[i]][tempPath[i+1]];
+        sum+=Weight[tempPathh[i]][tempPathh[i+1]];
     }
     return sum;
 }
@@ -99,8 +98,9 @@ int Annealing::calculateCost(int **Weight, int *tempPath, int numberOfCities){
 double Annealing::generateProbaility(int temperature, int* pathA, int* pathB){
     
     int diff = calculateCost(Weight, pathA, numberOfCities)-calculateCost(Weight, pathB, numberOfCities);
+
     int exponanta = exp((-1)*diff/temperature);
-    
+
     return min(1,exponanta);
 }
 
@@ -108,16 +108,21 @@ int* Annealing::generateRandomSwap(int *path){
     
     int cityA;
     int cityB;
-    do{
-        cityA=rand() % numberOfCities;
-        cityB=rand() % numberOfCities;
-    }while(cityA == cityB || cityA == 0 || cityB==0 || cityA == numberOfCities || cityB == numberOfCities);
     
-    double temp = path[cityA];
-    path[cityA]=path[cityB];
-    path[cityB]=temp;
-   
-    return path;
+    int *newPath= new int [numberOfCities];
+    for(int i=0;i<=numberOfCities;i++){
+        newPath[i]=path[i];
+    }
+    int indexToSwap=numberOfCities-1;
+    do{
+        cityA=(rand() % indexToSwap)+1;
+        cityB=(rand() % indexToSwap)+1;
+    }while(cityA == cityB);
+    
+    double temp = newPath[cityA];
+    newPath[cityA]=newPath[cityB];
+    newPath[cityB]=temp;
+    return newPath;
 }
 
 
